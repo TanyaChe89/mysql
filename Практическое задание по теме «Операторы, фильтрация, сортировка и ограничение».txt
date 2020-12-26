@@ -1,0 +1,32 @@
+1
+alter table vk.users modify column created_at varchar(20);
+alter table vk.users modify column updated_at varchar(20);
+
+2
+alter table vk.users modify column created_at datetime;
+alter table vk.users modify column updated_at datetime;
+
+3
+CREATE TABLE `test`.`storehouses_products` (
+  `name` VARCHAR(100) NOT NULL,
+  `value` INT NOT NULL,
+  PRIMARY KEY (`name`));
+
+INSERT INTO `test`.`storehouses_products` (`name`, `value`) VALUES ('nike', '0');
+INSERT INTO `test`.`storehouses_products` (`name`, `value`) VALUES ('adidas', '2500');
+INSERT INTO `test`.`storehouses_products` (`name`, `value`) VALUES ('puma', '0');
+INSERT INTO `test`.`storehouses_products` (`name`, `value`) VALUES ('nb', '30');
+INSERT INTO `test`.`storehouses_products` (`name`, `value`) VALUES ('convers', '500');
+INSERT INTO `test`.`storehouses_products` (`name`, `value`) VALUES ('russian keds', '1');
+
+SELECT * FROM test.storehouses_products order by 
+		case 
+			when value = 0 then 2
+            else 1
+		end, 
+	value;
+
+
+
+
+

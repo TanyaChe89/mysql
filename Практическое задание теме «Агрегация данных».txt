@@ -1,0 +1,40 @@
+1.
+
+CREATE TABLE `test`.`users` (
+  `name` VARCHAR(20) NOT NULL,
+  `age` INT NOT NULL,
+  PRIMARY KEY (`name`));
+
+INSERT INTO `test`.`users` (`name`, `age`) VALUES ('Masha', '20');
+INSERT INTO `test`.`users` (`name`, `age`) VALUES ('Dasha', '52');
+INSERT INTO `test`.`users` (`name`, `age`) VALUES ('Glasha', '47');
+
+Case 1:
+SELECT avg(age) FROM test.users;
+
+
+ALTER TABLE `test`.`users` 
+ADD COLUMN `birthday` DATETIME NOT NULL AFTER `age`;
+
+UPDATE `test`.`users` SET `birthday` = '2000-01-01 00:00:00' WHERE (`name` = 'Dasha');
+UPDATE `test`.`users` SET `birthday` = '2001-01-01 00:00:00' WHERE (`name` = 'Glasha');
+UPDATE `test`.`users` SET `birthday` = '2002-01-01 00:00:00' WHERE (`name` = 'Masha');
+
+Case 2:
+SELECT name, (TO_DAYS(NOW()) - TO_DAYS(birthday))/365.25 AS age1 FROM test.users;
+
+2.
+select name, 
+birthday, 
+DAYOFWEEK(birthday) AS DAY_OF_WEEK_IN_BIRTHYEAR, 
+DAYOFWEEK(MAKEDATE(2020, DAYOFYEAR(birthday))) AS DAY_OF_WEEK_THIS_YEAR 
+from test.users ; - запрос, чтобы понять логику извлечения и преобразования данных
+
+select 
+DAYOFWEEK(MAKEDATE(2020, DAYOFYEAR(birthday))) AS DAY_OF_WEEK_IN_THIS_YEAR, 
+COUNT(*) as COUNT_OF_DAYS_IN_THIS_YEAR
+from test.users 
+group by DAYOFWEEK(MAKEDATE(2020, DAYOFYEAR(birthday))); - запрос для 
+"Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели. Следует учесть, что необходимы дни недели текущего года, а не года рождения."
+
+
